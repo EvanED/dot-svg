@@ -1,0 +1,10 @@
+- Edges "reset" their color to red on mouse out even if that's not what color
+  they were originally. (WFAs use red transitions so that was a stopgap for a
+  bit. I've got a fix for this, just not integrated yet.)
+
+- Quotes around the 'onhover' attribute hang around in the output.
+
+- Fill in empty nodes with white so that there's more hit area.
+
+- Doesn't work with all browsers. Works for me with Firefox and Opera, but
+  not Chrome or IE.
