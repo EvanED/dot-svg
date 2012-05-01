@@ -1,0 +1,11 @@
+digraph "WFA@0x7fff0ecde4d8" {
+	A [label="node A" onhover="This is node A!"];
+	B [label="node B" onhover="This is node B!"];
+	C [label="node C" onhover="This is node C!"];
+
+        A->B [label="A" onhover="This is an A edge from A to B!"];
+        B->C [label="A" onhover="This is an A edge from B to C!"];
+
+        A->B [label="B" onhover="This is a B edge from A to B!"];
+        B->C [label="B" onhover="This is a B edge from B to C!"];
+}
