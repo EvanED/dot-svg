@@ -5,6 +5,37 @@ import os
 import pydot
 
 
+_next_id=0
+def get_fresh_id():
+    """Returns a fresh ID string each time it is called."""
+    global _next_id
+    this_id = "dot_svg_id_" + str(_next_id)
+    _next_id += 1
+    return this_id
+
+_seen_ids = set()
+def set_id_for_entity(entity):
+    """If the given entity (node or edge) has no ID, add a fresh one.
+
+    Also output a warning if the given ID has been seen before.
+    """
+    global _seen_ids
+    this_id = entity.get_id()
+    if this_id is None:
+        this_id = get_fresh_id()
+        entity.set_id(this_id)
+
+    if this_id in _seen_ids:
+        sys.stderr.write("%s: WARNING: non-unique ID %s found\n" % (sys.argv[0], this_id))
+    _seen_ids.add(this_id)
+
+def add_all_ids(graph):
+    for node in graph.get_node_list():
+        set_id_for_entity(node)
+    for edge in graph.get_edge_list():
+        set_id_for_entity(edge)
+
+
 def translate_line(orig_line, svg, hovers):
     """Returns a line of the template, appropriately translated:
 
@@ -32,18 +63,11 @@ def translate_line(orig_line, svg, hovers):
 def hover_from_node(node):
     hover = node.get('onhover')
     if hover:
-        return { 'TITLE': node.get_name(), 'HOVER': hover }
+        return { 'TITLE': node.get_id(), 'HOVER': hover }
     else:
         return None
 
-def hover_from_edge(node):
-    hover = node.get('onhover')
-    if hover:
-        return { 'TITLE': '%s--%s' % (node.get_source(), node.get_destination()),
-                 'HOVER': hover }
-    else:
-        return None
-
+hover_from_edge = hover_from_node
 
 def get_hovers(graph):
     node_hovers = filter(bool, map(hover_from_node, graph.get_node_list()))
@@ -52,6 +76,7 @@ def get_hovers(graph):
 
 
 def render_objects(dot_graph, template):
+    add_all_ids(dot_graph)
     hovers = get_hovers(dot_graph)
     svg = dot_graph.create(format='svg')
     return (translate_line(orig_line, svg, hovers) for orig_line in template)

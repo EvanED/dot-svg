@@ -14,8 +14,7 @@
       var htmlDocument = document;
 
       over_edge_handler = function(e) {
-		              var name = this.getElementsByTagName("title")[0].textContent;
-                              name = name.replace("->", "--");
+		              var name = this.id;
                               var label = document.getElementById('tooltip--' + name);
                               label.style.visibility='visible';
                               label.style.top=e.pageY + 'px';
@@ -29,8 +28,7 @@
                         }
 
       out_edge_handler = function() {
-		              var name = this.getElementsByTagName("title")[0].textContent;
-                              name = name.replace("->", "--");
+		              var name = this.id;
                               var label = document.getElementById('tooltip--' + name);
                               label.style.visibility='hidden';
 
@@ -42,7 +40,7 @@
                         }
 
       over_node_handler = function(e) {
-		              var name = this.getElementsByTagName("title")[0].textContent;
+		              var name = this.id;
                               var label = document.getElementById('tooltip--' + name);
 
                               if (label) {
@@ -59,7 +57,7 @@
                           }
 
       out_node_handler = function(e) {
-		              var name = this.getElementsByTagName("title")[0].textContent;
+		              var name = this.id;
                               var label = document.getElementById('tooltip--' + name);
                               if (label) {
                                   label.style.visibility='hidden';
@@ -79,11 +77,12 @@
 
  	 for (var i=0, max=all.length; i < max; i++) {
 	 	var element = all[i];
-		if (element.id.match(/edge.*/)) {
+                className = element.className.baseVal;
+		if (className.match(/edge.*/)) {
 			element.onmouseover = over_edge_handler;
 			element.onmouseout = out_edge_handler;
  		}
- 		else if (element.id.match(/node.*/)) {
+ 		else if (className.match(/node.*/)) {
 			element.onmouseover = over_node_handler;
 			element.onmouseout = out_node_handler;
  		}
