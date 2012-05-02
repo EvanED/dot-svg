@@ -8,6 +8,7 @@
           background:#666;
           color:#fff;
           visibility:hidden;
+          padding:5px;
       }
     </style>
     <script>
