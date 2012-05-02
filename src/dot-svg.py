@@ -63,6 +63,9 @@ def translate_line(orig_line, svg, hovers):
 def hover_from_node(node):
     hover = node.get('onhover')
     if hover:
+        assert hover[0]=='"'
+        assert hover[-1]=='"'
+        hover = hover[1:-1]
         return { 'TITLE': node.get_id(), 'HOVER': hover }
     else:
         return None
