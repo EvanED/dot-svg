@@ -1,7 +1,7 @@
 digraph "WFA@0x7fff0ecde4d8" {
 	A [label="node A" onhover="This is node A!"];
 	B [label="node B" onhover="This is node B!"];
-	C [label="node C" onhover="This is node C!"];
+	C [label="node C" onhover="<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' alt='Red dot'>"];
 
         A->B [label="A" onhover="This is an A edge from A to B!"];
         B->C [label="A" onhover="This is an A edge from B to C!"];
