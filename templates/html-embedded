@@ -106,6 +106,10 @@
  		else if (className.match(/node.*/)) {
 			element.onmouseover = over_node_handler;
 			element.onmouseout = out_node_handler;
+                        ellipse = element.getElementsByTagName("ellipse")[0];
+                        if (ellipse.getAttribute('fill') == 'none') {
+                            ellipse.setAttribute('fill', 'white');
+                        }
  		}
 	}
       }
