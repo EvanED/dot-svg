@@ -13,35 +13,49 @@
     <script>
       var htmlDocument = document;
 
+      function get_tooltip_div(entity) {
+          var name = entity.id;
+          return document.getElementById('tooltip--' + name);
+      }
+
+      function set_child_color(node, child_kind, color) {
+          var child = node.getElementsByTagName(child_kind)[0];
+
+          if (color == null) {
+              child.setAttribute('stroke', child.oldStroke);
+              child.setAttribute('fill', child.oldFill);
+          }
+          else {
+              child.oldStroke = child.getAttribute('stroke')
+              child.oldFill = child.getAttribute('fill')
+              child.setAttribute('stroke', color);
+              if (child_kind != "path") {
+                  child.setAttribute('fill', color);
+              }
+          }
+      }
+
       over_edge_handler = function(e) {
-		              var name = this.id;
-                              var label = document.getElementById('tooltip--' + name);
+		              var label = get_tooltip_div(this);
                               label.style.visibility='visible';
                               label.style.top=e.pageY + 'px';
                               label.style.left=(e.pageX+30) + 'px';
 
-		              var arc = this.getElementsByTagName("path")[0];
-		              var arrow = this.getElementsByTagName("polygon")[0];
-                              arc.setAttribute('stroke', 'blue');
-                              arrow.setAttribute('stroke', 'blue');
-                              arrow.setAttribute('fill', 'blue');
+                              set_child_color(this, "path", "blue");
+                              set_child_color(this, "polygon", "blue");
                         }
 
       out_edge_handler = function() {
-		              var name = this.id;
-                              var label = document.getElementById('tooltip--' + name);
+		              var label = get_tooltip_div(this);
                               label.style.visibility='hidden';
 
-		              var arc = this.getElementsByTagName("path")[0];
-		              var arrow = this.getElementsByTagName("polygon")[0];
-                              arc.setAttribute('stroke', 'red');
-                              arrow.setAttribute('stroke', 'red');
-                              arrow.setAttribute('fill', 'red');
+                              set_child_color(this, "path", null);
+                              set_child_color(this, "polygon", null);
                         }
 
       over_node_handler = function(e) {
-		              var name = this.id;
-                              var label = document.getElementById('tooltip--' + name);
+		              var label = get_tooltip_div(this);
+                              label.style.visibility='hidden';
 
                               if (label) {
                                   label.style.visibility='visible';
@@ -49,23 +63,18 @@
                                   label.style.left=(e.pageX+30) + 'px';
                               }
 
-                              var ellipse = this.getElementsByTagName("ellipse")[0];
-                              ellipse.oldFill = ellipse.getAttribute('fill');
-                              ellipse.oldStroke = ellipse.getAttribute('stroke');
-                              ellipse.setAttribute('fill', 'blue');
-                              ellipse.setAttribute('stroke', 'blue');
+                              set_child_color(this, "ellipse", "blue");
                           }
 
       out_node_handler = function(e) {
-		              var name = this.id;
-                              var label = document.getElementById('tooltip--' + name);
+		              var label = get_tooltip_div(this);
+                              label.style.visibility='hidden';
+
                               if (label) {
                                   label.style.visibility='hidden';
                               }
 
-                              var ellipse = this.getElementsByTagName("ellipse")[0];
-                              ellipse.setAttribute('fill', ellipse.oldFill);
-                              ellipse.setAttribute('stroke', ellipse.oldStroke);
+                              set_child_color(this, "ellipse", null);
                          }
 
       function foo() {
@@ -85,6 +94,10 @@
  		else if (className.match(/node.*/)) {
 			element.onmouseover = over_node_handler;
 			element.onmouseout = out_node_handler;
+                        ellipse = element.getElementsByTagName("ellipse")[0];
+                        if (ellipse.getAttribute('fill') == 'none') {
+                            ellipse.setAttribute('fill', 'white');
+                        }
  		}
 	}
       }
